@@ -52,6 +52,15 @@ minimo([(Px,X)|L],(Px,X)):-minimo(L,(Py,Y)),X<=Y
 ---------------------e)-------
 solve(Solucao) :- bfs_M(jarros(0,0),jarros(_,4),Solucao).
 
-bfs_M(Estado1,EstadoF,Solucao):-
-  bfs....
+bfs_M(Estado1,EstadoF,Solucao):- bfs_M2(EstadoF,[[EstadoI]],Solucao).
+
+bfs_M2(EstadoF,[[EstadoF|T]|_],Solucao):- reverse([EstadoF|T],Solucao).
+bfs_M2(EstadoF,[EstadosA|Outros],Solucao) :-
+      EstadosA=[Act|_],
+      findall([EstadoX|EstadosA],
+      (EstadoF\==Act, transicao(Act,Move,EstadoX), \+member(EstadoX,EstadosA)),
+      Novos),
+      append(Outros,Novos,Todos),
+      bfs_M2(EstadoF,Todos,Solucao).
+      
   
